@@ -1,9 +1,11 @@
 # Alguns comandos básicos do Git
 
 * **inicializa um repositorio**
+
 git init
 
 * **cria uma nova branch**
+
 git branch new_branch
 
 * **muda para um branch**
