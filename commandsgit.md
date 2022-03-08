@@ -27,3 +27,6 @@
 
 **retornar arquivos do github**
 * git pull
+
+** reseta a branch
+* git reset --hard [sua branch]
