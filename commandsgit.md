@@ -1,38 +1,29 @@
 # Alguns comandos básicos do Git
 
-* inicializa um repositorio &nbsp;
+* **inicializa um repositorio**
 git init
 
-* cria uma nova branch
-&nbsp; 
+* **cria uma nova branch**
 git branch new_branch
 
-* muda para um branch
-&nbsp;
+* **muda para um branch**
 git checkout new_branch
 
-* configurar git
-&nbsp;
+* **configurar git**
 git config --global user.name "NOME"
-&nbsp;
 git config --global user.email "meuemail@github.com"
 
-* adiciona os arquivos no repositório git
-&nbsp;
+* **adiciona os arquivos no repositório git**
 git add --all
 
-* commit no repositorio
-&nbsp;
+* **commit no repositorio**
 git commit -m "Adicionado arquivo readme.md"
 
-* cria uma ligação remota com o github
-&nbsp;
+* **cria uma ligação remota com o github**
 git remote add origin https://github.com/USUARIO/meu-primeiro-repositorio.git
 
-* enviar arquivos pro github
-&nbsp;
+* **enviar arquivos pro github**
 git push -u origin master
 
-* retornar arquivos do github
-&nbsp;
+* **retornar arquivos do github**
 git pull
