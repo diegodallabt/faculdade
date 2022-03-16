@@ -18,4 +18,15 @@ vFilter = v.filter((valor, indice, array) => {
     ...
 })
 
+MAP -> Mapeia um array
+v = [1, 30, 22, 4, 9, 11]
+vMap = v.map((valor) => {
+    ...
+})
+
+FOREACH -> Itera sobre os valores
+v = [1, 30, 22, 4, 9, 11]
+v.forEach(function(valor, indice, array){
+    console.log(valor, indice, array)
+})
  */
