@@ -1,5 +1,5 @@
 # Trabalho de Hamming
-Autor do trabalho: **Diego Dalla Bernardina Thedoldi**.
+Trabalho desenvolvido por **Diego Dalla Bernardina Thedoldi**.
 
 # Instruções para compilação do programa
 Executar **gcc hamming.c -o hamming** no terminal dentro pasta do arquivo. (deve possuir as bibliotecas do C instaladas)
