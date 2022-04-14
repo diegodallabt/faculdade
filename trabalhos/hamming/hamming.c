@@ -144,8 +144,6 @@ char decodando(short int saida){
             j++;
         }
     }
-    
-    
 
     // encodando a palavra de entrada para gerar uma nova saida e extrair bits c'
     novaSaida = encodandoLimpo(entrada);
