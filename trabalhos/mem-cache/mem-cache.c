@@ -1,47 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main()
 {
-	int r = 3, c = 3, i, j, count;
+	int r, c, i, j, count;
 
-	int* M1[r];
-   int* M2[r];
-   int* MR[r];
+   scanf("%d %d", &r, &c);
 
+	double* M1[r];
+   double* M2[r];
+   double* MR[r];
+   double* MT[r];
+
+   srand(time(NULL));
+
+   /* dynamic allocation */
 	for (i = 0; i < r; i++)
-		M1[i] = (int*)malloc(c * sizeof(int));
+		M1[i] = (double*)malloc(c * sizeof(double));
 
    for (i = 0; i < r; i++)
-		M2[i] = (int*)malloc(c * sizeof(int));
+		M2[i] = (double*)malloc(c * sizeof(double));
 
    for (i = 0; i < r; i++)
-      MR[i] = (int*)malloc(c * sizeof(int));
+      MR[i] = (double*)malloc(c * sizeof(double));
+
+   for (i = 0; i < r; i++)
+      MT[i] = (double*)malloc(c * sizeof(double));
    
-	count = 0;
+   /* generate M1 */
 	for (i = 0; i < r; i++)
 		for (j = 0; j < c; j++)
-			M1[i][j] = ++count; 
+			M1[i][j] = rand() % 100 + ((float)(rand() % 100)/100); 
 
-   count = 0;
+   /* generate M2 */
    for (i = 0; i < r; i++)
 		for (j = 0; j < c; j++)
-			M2[i][j] = ++count;
+			M2[i][j] = rand() % 100 + ((float)(rand() % 100)/100);
+   
+   /* generate transpose matrix */
+   for (int i = 0; i < r; i++) {
+		for (int j = 0; j < c; j++) {
+			MT[i][j] = M1[j][i];
+        }
+   }  
 
-   printf("M1: \n");
+   /* print M1 */
+   printf("\nM1: \n");
 	for (i = 0; i < r; i++){
 		for (j = 0; j < c; j++)
-			printf("%d ", M1[i][j]);
+			printf("%.2lf ", M1[i][j]);
       printf("\n");
    }
 
+   /* print M2 */
    printf("M2: \n");
    for (i = 0; i < r; i++){
 		for (j = 0; j < c; j++)
-			printf("%d ", M2[i][j]);
+			printf("%.2lf ", M2[i][j]);
       printf("\n");
    }
 
+   /* mutiplication M1 x M2 */
    for (int i = 0; i < r; i++) {
       for (int j = 0; j < c; j++) {
          MR[i][j] = 0;
@@ -51,13 +71,15 @@ int main()
       }
    }
 
+   /* print MR */
    printf("MR: \n");
    for (i = 0; i < r; i++){
 		for (j = 0; j < c; j++)
-			printf("%d ", MR[i][j]);
+			printf("%.2lf ", MR[i][j]);
       printf("\n");
    }
 
+   /* memory release */
 	for (int i = 0; i < r; i++)
    {
       free(M1[i]);

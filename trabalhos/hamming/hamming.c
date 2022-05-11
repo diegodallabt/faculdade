@@ -248,12 +248,12 @@ void leArquivo(const char * entrada, const char * saida){
     // lê cada caracter do arquivo encodado e decoda para o arquivo de saída
     while(palavra != EOF){
         fread(&pEncodada, sizeof(short int), 1, file);
-
         if (feof(file))
         {
             break;
         }
         palavra = decodando(pEncodada);
+        
         printf("Byte `%c` decodado\n\n", palavra);
         fwrite(&palavra, sizeof(char), 1, file2);
     }
@@ -290,6 +290,9 @@ void escreveArquivo(const char * entrada, const char * saida){
         if (feof(file))
         {
             break;
+        }
+        if(palavra == 10){
+            continue;
         }
         
         pEncodada = encodando(palavra);
