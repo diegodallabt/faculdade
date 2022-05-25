@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 void transposeM2(double ** MT, double ** M2, int r, int c){
@@ -41,15 +42,20 @@ void printMatrix(double ** M, int r, int c){
 }
 
 
-int main()
+int main(int argc, char const *argv[])
 {
 	int r1, c1, r2, c2, i, j;
+   float tempo = 0.0;
+   clock_t inicio, fim;
 
-   scanf("%d %d %d %d", &r1, &c1, &r2, &c2);
+   if(argc != 6) return 0;
+
+   r1 = atoi(argv[1]);
+   c1 = atoi(argv[2]);
+   r2 = atoi(argv[3]);
+   c2 = atoi(argv[4]);
    
-   if(c1 == r2){
-      printf("Matriz válida!\n");
-   }else{
+   if(c1 != r2){
       printf("Impossível multiplicar matrizes com essas dimensões.\n");
       exit(1);
    }
@@ -88,27 +94,54 @@ int main()
 		for (j = 0; j < c2; j++)
 			M2[i][j] = rand() % 100 + ((float)(rand() % 100)/100);
    
-   transposeM2(MT, M2, c2, r2);
+
    
+   /*
+
    printf("\nM1\n");
    printMatrix(M1, r1, c1);
 
    printf("\nM2\n");
    printMatrix(M2, r2, c2);
-
-   /* mutiplication M1 x M2 */
-   mulM1M2(M1, M2, MR, r1, c2);
-
-   printf("\nMR: \n");
-   printMatrix(MR, r1, c2);
-
-   printf("\nT[M2]: \n");
-   printMatrix(MT, c2, r2);
    
-   mulM1M2T(M1, MT, MRMT, r1, c2);
+   */
+   
 
-   printf("\nMRMT: \n");
-   printMatrix(MRMT, r1, c2);
+   if (!strcmp(argv[5], "o"))
+   { 
+      inicio = clock();
+      mulM1M2(M1, M2, MR, r1, c2);
+      fim = clock();
+      /*
+
+      printf("\nMR: \n");
+      printMatrix(MR, r1, c2);
+
+      */
+     tempo = (float) (((fim - inicio ) + 0.0) / CLOCKS_PER_SEC);
+
+     printf("%fs\n", tempo);
+   }else if(!strcmp(argv[5], "t"))
+   {
+      inicio = clock();
+      transposeM2(MT, M2, c2, r2);
+      mulM1M2T(M1, MT, MRMT, r1, c2);
+      fim = clock();
+
+      tempo = (float) (((fim - inicio ) + 0.0) / CLOCKS_PER_SEC);
+
+      printf("%fs\n", tempo);
+      /*
+      
+      printf("\nT[M2]: \n");
+      printMatrix(MT, c2, r2);
+   
+      printf("\nMRMT: \n");
+      printMatrix(MRMT, r1, c2);
+      
+      */
+   }
+
 
    /* memory release */
 	for (int i = 0; i < r1; i++)
