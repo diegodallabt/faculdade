@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    background: rgb(190, 190, 190);
+}
+
+#box-content {
+    background: #fff;
+    width: 210px;
+    height: 200px;
+    padding: 10px;
+    margin: 15% 45%;
+    border-radius: 5px;
+}
+
+input {
+    width: 160px;
+    height: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+    background: rgb(109, 109, 109);
+    color: #fff;
+    margin: 5px;
+}
+
+button {
+    width: 100px;
+    height: 30px;
+    border-radius: 3px;
+}
+
+.submit {
+    background: rgb(85, 108, 222);
+    color: #fff;
+    margin-left: 55px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 22px;
+}
+.t-login {
+    color: rgb(190, 190, 190);
+    text-align: center;
+}
+p {
+    color: rgb(190, 190, 190);
+    text-align: center;
+}
+
+p a {
+    color: rgb(85, 108, 222);
+    text-decoration: none;
+}
