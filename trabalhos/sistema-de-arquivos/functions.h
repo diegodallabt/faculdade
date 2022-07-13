@@ -5,9 +5,9 @@
 
 #define SIZE_DISK 16777216
 
-#define BYTES_PER_SECTOR 256
-#define SECTORS_PER_CLUSTER 2
-#define RESERVED_SECTOR 409
+#define BYTES_PER_SECTOR 512
+#define SECTORS_PER_CLUSTER 4
+#define RESERVED_SECTOR 1
 
 typedef struct BootRecord
 {
