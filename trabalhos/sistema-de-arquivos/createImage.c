@@ -47,10 +47,11 @@ BootRecord readBR(FILE *img){
 
     // posiciona o ponteiro
     fseek(img, 0, SEEK_SET);
-    
+
     //lê todo o bootrecord da imagem e armazena
     fread(&br, sizeof(BootRecord), 1, img);
     
+    printf("%d", br.bytes_per_sector);
     return br;
 }
 
@@ -69,9 +70,9 @@ void createImage(){
     }
     
     if(setBR(img)){
-        printf("A imagem foi criada com sucesso e está pronta para uso.\n");
+        printf("[!] Nenhuma imagem especificada, logo uma nova imagem foi criada com sucesso e está pronta para uso.\n");
     }
-
+    readBR(img);
     fclose(img);
 }
 
