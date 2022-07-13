@@ -7,8 +7,8 @@
 #define SIZE_DISK 16777216
 
 #define BYTES_PER_SECTOR 256
-#define SECTORS_PER_CLUSTER 2
-#define RESERVED_SECTOR 2
+#define SECTORS_PER_CLUSTER 4
+#define RESERVED_SECTOR 1
 
 typedef struct BootRecord
 {
@@ -37,33 +37,41 @@ bool setBR(FILE * img){
     fseek(img, 0, SEEK_SET);
 
     // escreve o bootrecord na imagem
-    fwrite(&br, 1 , sizeof(br) , img);
+    fwrite(&br, sizeof(br), 1, img);
         
     return true;
 }
 
-BootRecord readBR(FILE *img){
+BootRecord readBR(){
+    FILE * img;
     BootRecord br;
+
+    img = fopen( "file.img" , "rb" );
+
+    if(img == NULL){
+        printf("Error opening image file.\n");
+    }
 
     // posiciona o ponteiro
     fseek(img, 0, SEEK_SET);
 
     //lê todo o bootrecord da imagem e armazena
     fread(&br, sizeof(BootRecord), 1, img);
-    
-    printf("%d", br.bytes_per_sector);
+
+    fclose(img);
     return br;
 }
 
 void createImage(){
     FILE * img;
-    char byte[1] = {0};
-
+    
     img = fopen( "file.img" , "wb" );
 
     if(img == NULL){
         printf("Error opening image file.\n");
     }
+
+    char byte[1] = {0};
 
     for(int i=0 ; i<= SIZE_DISK ; i++){
         fwrite(byte, 1 , sizeof(byte) , img);
@@ -72,12 +80,13 @@ void createImage(){
     if(setBR(img)){
         printf("[!] Nenhuma imagem especificada, logo uma nova imagem foi criada com sucesso e está pronta para uso.\n");
     }
-    readBR(img);
+    
     fclose(img);
 }
 
 int main(int argc, char const *argv[])
 {
-    createImage();
+    //createImage();
+    readBR();
     return(0);
 }

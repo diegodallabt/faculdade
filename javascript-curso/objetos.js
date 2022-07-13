@@ -1,7 +1,0 @@
-/*
-OBJETOS - PROPRIEDADES, MÉTODOS E ETC.
-
-
-
-
-*/
