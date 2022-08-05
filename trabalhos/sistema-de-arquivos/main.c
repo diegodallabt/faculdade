@@ -1,41 +1,49 @@
 #include "functions.c"
 
-/*
-    DISCO DE 16MB
-
-    <--- BOOT RECORD --->
-    512 BYTES POR SETOR
-    4   SETOR POR CLUSTER
-
-    <--- INFORMAÇÃO DE SETORES --->
-    1       SETOR   (512        BYTES)   BOOT_RECORD
-    3.276   SETORES (1.677.312  BYTES)   ROOT_DIR      (~10% DO TAMANHO TOTAL)
-    29.492  SETORES (15.099.904 BYTES)   DATA_SECTION   (~90% DO TAMANHO TOTAL)
-
-    <--- TOTAL --->
-    32.768  SETORES
-    8.192  CLUSTERS
-
-*/
 
 int main(int argc, char const *argv[])
 {
-    char filename[13];
-    if(argc == 2)
-        strcpy(filename, argv[1]);
-    else if (argc > 2){
-        printf("Argumentos Invalidos.\n");
-        return 1;
-    }
-    else{
-        createImg();
-    }
-        
-        
-    openFile(filename);
+int opt;
     
-
-
-
-    return 0;
+    BootRecord br;
+    while (opt!=8)
+    {
+        printf("\n1. Formatar imagem.\n2. Listar arquivos.\n3. Copiar arquivo do disco para o sistema de arquivos.\n4. Copiar do sistema de arquivos para o disco.\n5. Apagar arquivo.\n6. Criar diretório.\n7. Navegar.\n8. Sair\n\nDigite o número da opção que deseja: ");
+        scanf("%d", &opt);
+        switch (opt)
+        {
+        case 1:
+            createImage();
+            break;
+        case 2:
+            br = readBR();
+            showFiles("safs.img", startDirectoryBlocks(), 1, br.total_main_directory_entries);
+            break;
+        case 3:
+            br = readBR();
+            copyFile("safs.img", 1, startDirectoryBlocks(), br.total_main_directory_entries);
+            break;
+        case 4:
+            br = readBR();
+            extractArq("safs.img", startDirectoryBlocks(), br.total_main_directory_entries);
+            break;
+        case 5:
+            br = readBR();
+            deleteFile(1, startDirectoryBlocks(), br.total_main_directory_entries);
+            break;
+        case 6:
+            br = readBR();
+            createDir(startDirectoryBlocks(), br.total_main_directory_entries);
+            break;
+        case 7:
+            navigator("safs.img");
+            break;
+        case 8:
+            break;
+        }
+    }
+    
+    
+    
+    return(0);
 }

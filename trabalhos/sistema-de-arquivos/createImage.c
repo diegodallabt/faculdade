@@ -3,90 +3,83 @@
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
-
-#define SIZE_DISK 16777216
+#include <string.h>
 
 #define BYTES_PER_SECTOR 512
 #define SECTORS_PER_CLUSTER 4
 #define RESERVED_SECTOR 1
 
+#pragma pack(push, 1)
 typedef struct BootRecord
 {
   unsigned short    bytes_per_sector;
   unsigned char     sectors_per_cluster;
-  unsigned short    reserved_sector;
+  unsigned char     reserved_sector;
   unsigned short    sector_directory_blocks;
   unsigned short    sector_section_data;
   unsigned int      pointer_to_space_free;
-  unsigned int      total_directory_entries;
+  unsigned int      total_main_directory_entries;
 }__attribute__((packed)) BootRecord;
 
-bool setBR(FILE * img){
-    BootRecord br;
+#pragma pack(push, 1)
+typedef struct FileFormat{    
+    unsigned char  status;
+    unsigned char  name[12];
+    unsigned char  ext[4];
+    unsigned char  attribute;
+    unsigned int   first_cluster;
+    unsigned int   fileSize;
+    unsigned short total_entries;
+} __attribute__((packed)) FileFormat;
 
-    // seta os valores padrões do boot record
-    br.bytes_per_sector = BYTES_PER_SECTOR;
-    br.sectors_per_cluster = SECTORS_PER_CLUSTER;
-    br.reserved_sector = RESERVED_SECTOR;
-    br.sector_directory_blocks = (SIZE_DISK/BYTES_PER_SECTOR)*0.1;
-    br.sector_section_data = (SIZE_DISK/BYTES_PER_SECTOR)*0.9;
-    br.pointer_to_space_free = 0;
-    br.total_directory_entries = 0;
+typedef struct Nav
+{
+    int firstCluster;
+    int entries;
+} Nav;
 
-    // posiciona ponteiro no inicio da imagem
-    fseek(img, 0, SEEK_SET);
 
-    // escreve o bootrecord na imagem
-    fwrite(&br, sizeof(br), 1, img);
-        
-    return true;
-}
-
-BootRecord readBR(){
-    FILE * img;
-    BootRecord br;
-
-    img = fopen( "file.img" , "rb" );
-
-    if(img == NULL){
-        printf("Error opening image file.\n");
-    }
-
-    // posiciona o ponteiro
-    fseek(img, 0, SEEK_SET);
-
-    //lê todo o bootrecord da imagem e armazena
-    fread(&br, sizeof(BootRecord), 1, img);
-
-    fclose(img);
-    return br;
-}
-
-void createImage(){
-    FILE * img;
-    
-    img = fopen( "file.img" , "wb" );
-
-    if(img == NULL){
-        printf("Error opening image file.\n");
-    }
-
-    char byte[1] = {0};
-
-    for(int i=0 ; i<= SIZE_DISK ; i++){
-        fwrite(byte, 1 , sizeof(byte) , img);
-    }
-    
-    if(setBR(img)){
-        printf("[!] Nenhuma imagem especificada, logo uma nova imagem foi criada com sucesso e está pronta para uso.\n");
-    }
-    
-    fclose(img);
-}
 
 int main(int argc, char const *argv[])
 {
-    //createImage();
-    readBR();
+    int opt;
+    
+    BootRecord br;
+    while (opt!=8)
+    {
+        printf("\n1. Formatar imagem.\n2. Listar arquivos.\n3. Copiar arquivo do disco para o sistema de arquivos.\n4. Copiar do sistema de arquivos para o disco.\n5. Apagar arquivo.\n6. Criar diretório.\n7. Navegar.\n8. Sair\n\nDigite o número da opção que deseja: ");
+        scanf("%d", &opt);
+        switch (opt)
+        {
+        case 1:
+            createImage();
+            break;
+        case 2:
+            br = readBR();
+            showFiles("safs.img", startDirectoryBlocks(), 1, br.total_main_directory_entries);
+            break;
+        case 3:
+            copyFile("safs.img");
+            break;
+        case 4:
+            extractArq("safs.img");
+            break;
+        case 5:
+            deleteFile();
+            break;
+        case 6:
+            br = readBR();
+            createDir(startDirectoryBlocks(), br.total_main_directory_entries);
+            break;
+        case 7:
+            navigator("safs.img");
+            break;
+        case 8:
+            break;
+        }
+    }
+    
+    
+    
     return(0);
 }
