@@ -211,6 +211,5 @@ int main(int argc, char const *argv[])
         printf("[!] Parâmetro de execução não indetificado\n");
     }
 
-    // execParalela(n);
     return 0;
 }
