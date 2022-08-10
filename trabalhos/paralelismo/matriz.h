@@ -3,8 +3,12 @@
 #include <time.h>
 #include "omp.h"
 
+#define feature_flag_print 0
+#define feature_flag_tempo 1
+
 double ** inicializaMatriz(double n);
 void imprimeMatriz(double ** M, int n);
+void liberaMatriz(double **M, int n);
 
 void preencheMatriz(double ** M, int n);
 void quadrado(double ** M, int n);

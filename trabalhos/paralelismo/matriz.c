@@ -1,5 +1,4 @@
 #include "matriz.h"
-#include "omp.h"
 
 // inicializa matriz
 double ** inicializaMatriz(double n)
@@ -12,6 +11,15 @@ double ** inicializaMatriz(double n)
         M[i] = (double *)malloc(n * sizeof(double));
 
     return M;
+}
+
+// libera a memória alocada
+void liberaMatriz(double **M, int n)
+{
+    for (int i = 0; i < n; i++)
+        free(M[i]);
+    free(M);
+    
 }
 
 // printa matriz
@@ -35,7 +43,7 @@ void preencheMatriz(double **M, int n)
 
     for (i = 0; i < n; i++)
         for (j = 0; j < n; j++)
-            M[i][j] = rand() % 10 + ((double)(rand() % 10) / 100);
+            M[i][j] = rand() % 100 + ((double)(rand() % 100) / 100);
 }
 
 // calcula o quadrado da matriz
@@ -72,59 +80,51 @@ double soma(double ** M, int n)
 // preenche matriz usando paralelismo
 void preencheMatrizP(double **M, int n)
 {
-    omp_set_num_threads(num_threads);
+    omp_set_num_threads(1);
     int i, j;
 
     #pragma omp parallel shared(i,M) private(j)
-    {
-        #pragma omp for
-        for (i = 0; i < n; i++)
-            for (j = 0; j < n; j++)
-                M[i][j] = rand() % 10 + ((double)(rand() % 10) / 100);
-    }
+    #pragma omp for
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            M[i][j] = rand() % 100 + ((double)(rand() % 100) / 100);
 }
 
 // calcula o quadrado da matriz usando paralelismo
 void quadradoP(double ** M, int n)
 {
-    omp_set_num_threads(num_threads);
+    omp_set_num_threads(1);
     int i, j;
 
     #pragma omp parallel shared(i,M) private(j)
-    {
-        #pragma omp for
-        for (i = 0; i < n; i++)
-            for (j = 0; j < n; j++)
-                M[i][j] = M[i][j] * M[i][j];
-    }
+    #pragma omp for
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            M[i][j] = M[i][j] * M[i][j];
 }
 
 // calcula a diferença entre duas matrizes usando paralelismo
 void diferencaP(double ** A, double ** B, double ** D, int n)
 {
-    omp_set_num_threads(num_threads);
+    omp_set_num_threads(1);
     int i, j;
     #pragma omp parallel shared(i,A, B, D)
-    {
-        #pragma omp for
-        for (i = 0; i < n; i++)
-            for (j = 0; j < n; j++)
-                D[i][j] = A[i][j] - B[i][j];
-    }
+    #pragma omp for
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            D[i][j] = A[i][j] - B[i][j];
 }
 
 // soma os elementos da matriz usando paralelismo
 double somaP(double ** M, int n)
 {
-    omp_set_num_threads(num_threads);
+    omp_set_num_threads(1);
     int i, j;
     double soma = 0;
     #pragma omp parallel shared (M,i) reduction(+:soma)
-    {
-        #pragma omp for
-        for (i = 0; i < n; i++)
-            for (j = 0; j < n; j++)
-                soma += M[i][j];
-    }
+    #pragma omp for
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            soma += M[i][j];
     return soma;
 }
