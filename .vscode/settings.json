@@ -3,6 +3,8 @@
     "files.associations": {
         "stdlib.h": "c",
         "string.h": "c",
-        "functions.h": "c"
+        "functions.h": "c",
+        "stdio.h": "c",
+        "matriz.h": "c"
     }
 }
